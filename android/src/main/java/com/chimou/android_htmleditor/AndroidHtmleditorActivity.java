@@ -3,6 +3,7 @@ package com.chimou.android_htmleditor;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,20 +15,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import android.util.Log;
-
+import android.os.Handler;
+// import android.text.InputType;
+import android.view.inputmethod.InputMethodManager;
 
 import io.github.mthli.knife.KnifeText;
 
 public class AndroidHtmleditorActivity extends Activity {
-    // private static final String BOLD = "<b>Bold</b><br><br>";
-    // private static final String ITALIT = "<i>Italic</i><br><br>";
-    // private static final String UNDERLINE = "<u>Underline</u><br><br>";
-    // private static final String STRIKETHROUGH = "<s>Strikethrough</s><br><br>"; // <s> or <strike> or <del>
-    // private static final String BULLET = "<ul><li>bullet</li></ul>";
-    // private static final String QUOTE = "<blockquote>Quote</blockquote>";
-    // private static final String LINK = "<a href=\"https://github.com/mthli/Knife\">Link</a><br><br>";
-    // private static final String EXAMPLE = BOLD + ITALIT + UNDERLINE + STRIKETHROUGH + BULLET + QUOTE + LINK;
-
     private KnifeText knife;
 
     @Override
@@ -145,43 +139,43 @@ public class AndroidHtmleditorActivity extends Activity {
         });
     }
 
-    private void setupQuote() {
-        ImageButton quote = (ImageButton) findViewById(R.id.quote);
+    // private void setupQuote() {
+    //     ImageButton quote = (ImageButton) findViewById(R.id.quote);
 
-        quote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                knife.quote(!knife.contains(KnifeText.FORMAT_QUOTE));
-            }
-        });
+    //     quote.setOnClickListener(new View.OnClickListener() {
+    //         @Override
+    //         public void onClick(View v) {
+    //             knife.quote(!knife.contains(KnifeText.FORMAT_QUOTE));
+    //         }
+    //     });
 
-        quote.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(AndroidHtmleditorActivity.this, R.string.toast_quote, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-    }
+    //     quote.setOnLongClickListener(new View.OnLongClickListener() {
+    //         @Override
+    //         public boolean onLongClick(View v) {
+    //             Toast.makeText(AndroidHtmleditorActivity.this, R.string.toast_quote, Toast.LENGTH_SHORT).show();
+    //             return true;
+    //         }
+    //     });
+    // }
 
-    private void setupLink() {
-        ImageButton link = (ImageButton) findViewById(R.id.link);
+    // private void setupLink() {
+    //     ImageButton link = (ImageButton) findViewById(R.id.link);
 
-        link.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showLinkDialog();
-            }
-        });
+    //     link.setOnClickListener(new View.OnClickListener() {
+    //         @Override
+    //         public void onClick(View v) {
+    //             showLinkDialog();
+    //         }
+    //     });
 
-        link.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(AndroidHtmleditorActivity.this, R.string.toast_insert_link, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-    }
+    //     link.setOnLongClickListener(new View.OnLongClickListener() {
+    //         @Override
+    //         public boolean onLongClick(View v) {
+    //             Toast.makeText(AndroidHtmleditorActivity.this, R.string.toast_insert_link, Toast.LENGTH_SHORT).show();
+    //             return true;
+    //         }
+    //     });
+    // }
 
     private void setupClear() {
         ImageButton clear = (ImageButton) findViewById(R.id.clear);
@@ -252,13 +246,33 @@ public class AndroidHtmleditorActivity extends Activity {
             knife.redo();
         }
         else if (R.id.save == item.getItemId()) {
-            Intent data = new Intent();
-            String content = knife.toHtml();
-            data.putExtra("content", content);
-            setResult(RESULT_OK, data);
-            finish();
+            hideKeyboard();
+
         }
 
         return true;
+    }
+
+    public void hideKeyboard() {
+        try {
+            InputMethodManager inputmanager = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (inputmanager != null) {
+                inputmanager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent data = new Intent();
+                        String content = knife.toHtml();
+                        data.putExtra("content", content);
+                        setResult(RESULT_OK, data);
+                        finish();
+                    }
+                }, 500);
+            }
+        } catch (Exception var2) {
+        }
+
     }
 }

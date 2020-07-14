@@ -13,8 +13,6 @@ import io.flutter.plugin.common.PluginRegistry.Registrar
 import io.flutter.plugin.common.PluginRegistry.ActivityResultListener
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
-import android.util.Log
-
 
 /** AndroidHtmleditorPlugin
 this plugin does not support Flutter pre-1.12.*

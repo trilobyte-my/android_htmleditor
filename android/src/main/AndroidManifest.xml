@@ -2,7 +2,7 @@
 
 
   <application>
-    <activity android:name="com.chimou.android_htmleditor.AndroidHtmleditorActivity" />
+    <activity android:name="com.chimou.android_htmleditor.AndroidHtmleditorActivity" android:label="Editor"/>
   </application>
 
   <!-- <activity android:name="com.chimou.android_htmleditor.AndroidHtmleditorActivity" android:label="AndroidHtmleditorActivity">
