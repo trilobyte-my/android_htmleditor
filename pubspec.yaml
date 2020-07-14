@@ -1,0 +1,21 @@
+name: android_htmleditor
+description: Flutter plugin for Knife Editor (Android) from https://github.com/mthli/Knife.
+version: 0.0.1
+author: yinsee@3b.my
+homepage: https://github.com/yinsee/android_htmleditor.
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    androidPackage: com.chimou.android_htmleditor
+    pluginClass: AndroidHtmleditorPlugin

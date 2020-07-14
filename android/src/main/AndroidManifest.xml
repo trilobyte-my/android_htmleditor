@@ -1,0 +1,14 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.chimou.android_htmleditor">
+
+
+  <application>
+    <activity android:name="com.chimou.android_htmleditor.AndroidHtmleditorActivity" />
+  </application>
+
+  <!-- <activity android:name="com.chimou.android_htmleditor.AndroidHtmleditorActivity" android:label="AndroidHtmleditorActivity">
+    <intent-filter>
+      <action android:name="com.chimou.android_htmleditor.AndroidHtmleditorActivity" />
+      <category android:name="android.intent.category.DEFAULT" />
+    </intent-filter>
+  </activity> -->
+</manifest>
