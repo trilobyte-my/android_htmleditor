@@ -11,6 +11,7 @@ class AndroidHtmleditor {
     return version;
   }
 
+  /// NB: Throws PlatformException if Back button is pressed
   static Future<String> edit(String content) async {
     return await _channel.invokeMethod('edit', {'content': content});
   }

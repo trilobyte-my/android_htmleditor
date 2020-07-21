@@ -24,9 +24,14 @@ class _MyAppState extends State<MyApp> {
                 child: Text('EDITOR'),
                 onPressed: () {
                   AndroidHtmleditor.edit(html).then((_) {
-                    setState(() {
-                      html = _;
-                    });
+                    print(_);
+                    if (_ != null) {
+                      setState(() {
+                        html = _;
+                      });
+                    }
+                  }).catchError((_) {
+                    //
                   });
                 }),
             Text(html),
