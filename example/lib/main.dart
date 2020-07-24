@@ -9,7 +9,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var html = '<b>Sample</b> Code';
+  String html;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -24,12 +24,17 @@ class _MyAppState extends State<MyApp> {
                 child: Text('EDITOR'),
                 onPressed: () {
                   AndroidHtmleditor.edit(html).then((_) {
-                    setState(() {
-                      html = _;
-                    });
+                    print(_);
+                    if (_ != null) {
+                      setState(() {
+                        html = _;
+                      });
+                    }
+                  }).catchError((_) {
+                    //
                   });
                 }),
-            Text(html),
+            Text(html ?? ''),
           ],
         ),
       ),

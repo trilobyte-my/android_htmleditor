@@ -23,12 +23,12 @@ public class AndroidHtmleditorPlugin: FlutterPlugin, MethodCallHandler, Activity
     const val EDIT_REQUEST = 1
   }
 
-  var result: Result? = null
-  var activity: Activity? = null
-  var context: Context? = null
+  private var result: Result? = null
+  private var activity: Activity? = null
+  private var context: Context? = null
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    val channel = MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "android_htmleditor")
+    val channel = MethodChannel(flutterPluginBinding.flutterEngine.dartExecutor, "android_htmleditor")
     context = flutterPluginBinding.applicationContext
     channel.setMethodCallHandler(this)
   }
@@ -58,31 +58,39 @@ public class AndroidHtmleditorPlugin: FlutterPlugin, MethodCallHandler, Activity
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
-    } else if (call.method == "edit") {
-      edit(call.argument("content"), result)
-    } else {
-      result.notImplemented()
+    when (call.method) {
+        "getPlatformVersion" -> {
+          result.success("Android ${android.os.Build.VERSION.RELEASE}")
+        }
+        "edit" -> {
+          edit(call.argument("content") ?: "", result)
+        }
+        else -> {
+          result.notImplemented()
+        }
     }
   }
 
   // main plugin code
-  fun edit(content: String?, @NonNull result: Result) {
+  private fun edit(content: String, @NonNull result: Result) {
     this.result = result
     val intent = Intent(context, AndroidHtmleditorActivity::class.java)
     intent.putExtra("content", content)
     activity!!.startActivityForResult(intent, EDIT_REQUEST)
   }
 
-  override public fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
+  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
 
-    if (result == null) { return false }
+    if (result == null) {
+      return false
+    }
 
     if (requestCode == EDIT_REQUEST)
     {
       if (resultCode == Activity.RESULT_OK) {
         result!!.success(data?.getStringExtra("content"))
+      } else {
+        result!!.error("Canceled","Canceled","Canceled")
       }
     }
     return true

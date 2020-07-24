@@ -253,26 +253,40 @@ public class AndroidHtmleditorActivity extends Activity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent data = new Intent();
+                String content = knife.toHtml();
+                data.putExtra("content", content);
+                setResult(RESULT_CANCELED, data);
+                finish();
+            }
+        }, 500);
+    }
+
     public void hideKeyboard() {
         try {
-            InputMethodManager inputmanager = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (inputmanager != null) {
-                inputmanager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
-
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent data = new Intent();
-                        String content = knife.toHtml();
-                        data.putExtra("content", content);
-                        setResult(RESULT_OK, data);
-                        finish();
-                    }
-                }, 500);
+            InputMethodManager inputManager = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (inputManager != null) {
+                inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
             }
         } catch (Exception var2) {
-        }
 
+        }
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent data = new Intent();
+                String content = knife.toHtml();
+                data.putExtra("content", content);
+                setResult(RESULT_OK, data);
+                finish();
+            }
+        }, 500);
     }
 }
