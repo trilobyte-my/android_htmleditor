@@ -63,7 +63,7 @@ public class AndroidHtmleditorPlugin: FlutterPlugin, MethodCallHandler, Activity
           result.success("Android ${android.os.Build.VERSION.RELEASE}")
         }
         "edit" -> {
-          edit(call.argument("content"), result)
+          edit(call.argument("content") ?: "", result)
         }
         else -> {
           result.notImplemented()
@@ -72,7 +72,7 @@ public class AndroidHtmleditorPlugin: FlutterPlugin, MethodCallHandler, Activity
   }
 
   // main plugin code
-  private fun edit(content: String?, @NonNull result: Result) {
+  private fun edit(content: String, @NonNull result: Result) {
     this.result = result
     val intent = Intent(context, AndroidHtmleditorActivity::class.java)
     intent.putExtra("content", content)

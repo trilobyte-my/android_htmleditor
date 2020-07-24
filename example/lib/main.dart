@@ -9,7 +9,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  var html = '<b>Sample</b> Code';
+  String html;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
                     //
                   });
                 }),
-            Text(html),
+            Text(html ?? ''),
           ],
         ),
       ),
